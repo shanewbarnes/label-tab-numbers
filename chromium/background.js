@@ -4,7 +4,7 @@ let labelTabs = (tabIndex = null) => {
       
       let title = (tab.index + 1).toString() + " | " + tab.title.slice(tabIndex === tab.index ? 0 : 4);
 
-      chrome.scriping.executeScript({
+      chrome.scripting.executeScript({
         target: { tabId: tab.id },
         function: (title) => {
           document.title = title;
