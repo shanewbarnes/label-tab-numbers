@@ -1,0 +1,17 @@
+{
+  "name": "Label Tab Numbers",
+  "description": "Labels tab with its index",
+  "version": "1.0",
+  "manifest_version": 3,
+  "permissions": [
+    "tabs",
+    "scripting",
+    "background"
+  ],
+  "host_permissions": [
+    "*://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
