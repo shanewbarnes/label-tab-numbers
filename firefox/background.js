@@ -1,7 +1,7 @@
 let labelTabs = (tabIndex = null) => {
-  browser.tabs.forEach((tab) => {
-  tabs.query({}, (tabs) => {
-      
+  browser.tabs.query({}, (tabs) => {
+    tabs.forEach((tab) => {
+ 
       let title = (tab.index + 1).toString() + " | " + tab.title.slice(tabIndex === tab.index ? 0 : 4);
 
       browser.scripting.executeScript({
