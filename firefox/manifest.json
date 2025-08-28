@@ -5,8 +5,7 @@
   "manifest_version": 3,
   "permissions": [
     "tabs",
-    "scripting",
-    "background"
+    "scripting"
   ],
   "host_permissions": [
     "*://*/*"
