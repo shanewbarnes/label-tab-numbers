@@ -6,7 +6,7 @@ let labelTabs = (tabIndex = null) => {
 
       browser.scripting.executeScript({
         target: { tabId: tab.id },
-        function: (title) => {
+        func: (title) => {
           document.title = title;
         },
         args: [title]
