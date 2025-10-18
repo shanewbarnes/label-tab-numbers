@@ -4,6 +4,9 @@ let labelTabs = (tabIndex = null) => {
  
       let title = (tab.index + 1).toString() + " | " + tab.title.slice(tabIndex === tab.index ? 0 : 4);
 
+      console.log("test");
+      browser.tabs.update({ title: "My New Tab Title" });
+      /*
       browser.scripting.executeScript({
         target: { tabId: tab.id },
         func: (title) => {
@@ -11,6 +14,7 @@ let labelTabs = (tabIndex = null) => {
         },
         args: [title]
       });
+      */
     });
   });
 }
