@@ -1,32 +1,50 @@
-let labelTabs = (tabIndex = null) => {
-  browser.tabs.query({}, (tabs) => {
-    tabs.forEach((tab) => {
- 
-      let title = (tab.index + 1).toString() + " | " + tab.title.slice(tabIndex === tab.index ? 0 : 4);
+let tabSet = new Set();
 
-      console.log("test");
-      browser.tabs.update({ title: "My New Tab Title" });
-      /*
-      browser.scripting.executeScript({
-        target: { tabId: tab.id },
-        func: (title) => {
-          document.title = title;
-        },
-        args: [title]
-      });
-      */
+let labelTabs = async () => {
+  let labelLength = 4;
+
+  return await browser.tabs.query({}).then((tabs) => {
+    tabs.forEach((tab) => {
+      let firstLabel = !tabSet.has(tab.id);
+      let title = (tab.index + 1).toString() + " | " + tab.title.slice(labelLength);
+
+      if (!firstLabel) {
+        console.log("2")
+        labelTab(tab.id, title);
+      }
     });
   });
 }
 
-browser.tabs.onCreated.addListener((tab) => {
-  labelTabs(tab.index);
-});
-
-browser.tabs.onRemoved.addListener(() => {
+let labelTab = (tabId, title) => {
+  browser.scripting.executeScript({
+    target: { tabId: tabId },
+    func: (title) => {
+      document.title = title;
+    },
+    args: [title]
+  });
+}
+browser.tabs.onRemoved.addListener((tabId) => {
+  tabSet.delete(tabId);
   labelTabs();
 });
 
-browser.tabs.onMoved.addListener(() => {
+browser.tabs.onMoved.addListener((tabId) => {
   labelTabs();
+});
+
+browser.tabs.onUpdated.addListener((tabId, _, tab) => {
+  if (!tabSet.has(tabId) && tab.status === "complete") {
+    console.log("1");
+    labelTabs()
+      .then(() => tabSet.add(tabId))
+      .then(() => labelTab(tabId, (tab.index + 1).toString() + " | " + tab.title));
+    /*let title = (tab.index + 1).toString() + " | " + tab.title
+    console.log(promise);
+    tabSet.add(tabId);
+    console.log("3");
+    labelTab(tabId, title);
+    */
+  }
 });
